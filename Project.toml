@@ -1,7 +1,10 @@
 name = "Assignment07"
 uuid = "67893044-1481-44cf-8ab6-de350e09ee4e"
-authors = ["Kevin Bonham, PhD <kbonham@wellesley.edu>"]
+authors = ["Kevin Bonham, PhD <kbonham@wellesley.edu>", "Emily Lu, Student <sl112@wellesley.edu>"]
 version = "0.1.0"
+
+[deps]
+BioSequences = "7e6ae17a-c86d-528c-b3b9-7f778a29fe59"
 
 [compat]
 julia = "1.6"
