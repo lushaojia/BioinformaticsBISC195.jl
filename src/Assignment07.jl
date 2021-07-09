@@ -4,8 +4,8 @@ export normalizeDNA,
        composition,
        gc_content,
        complement,
-       reverse_complement
-
+       reverse_complement,
+       parse_fasta
 
 # # uncomment the following line if you intend to use BioSequences types
 # using BioSequences
@@ -171,7 +171,71 @@ function reverse_complement(sequence)
     return revComplSeq
 end
 
-# Your code here.
+
+"""
+    function parse_fasta(path)
+
+Reads a fasta-formated file and returns 2 vectors,
+one containing parsed headers 
+(which do not contain the character '>' at the beginning),
+the other containing the entire sequence as a `String`.
+
+The function validates sequences to see if they contain DNA bases only. Accomodates 
+sequences with ambiguous bases (e.g. base N).
+
+Example
+≡≡≡≡≡≡≡≡≡
+julia> ex1 = parse_fasta("data/ex1.fasta");
+
+julia> ex1[1]
+2-element Array{String,1}:
+   "ex1.1 | easy"
+   "ex1.2 | multiline"
+
+julia> ex1[2]
+2-element Array{String,1}:
+   "AATTATAGC"
+   "CGCCCCCCAGTCGGATT"
+
+julia> ex2 = parse_fasta("data/ex2.fasta");
+ERROR: invalid base H
+"""
+
+function parse_fasta(path)
+    headerArr = []
+    seqStr = ""
+    seqArr = []
+    counter = 1
+
+    for line in readlines(path)
+        if startswith(line, '>')
+            alteredHeader = line[2:length(line)]
+            push!(headerArr, alteredHeader)
+            if counter > 1
+                # every time a header is encountered
+                # pushes the concatenated DNA sequences that came before the header to seqArr
+                # and
+                # seqStr is re-set to an empty String
+                push!(seqArr, seqStr)
+                seqStr = ""
+            end
+            counter += 1
+        else
+            for base in line
+                occursin(base, "AGCTN") || error("Invalid base, $base")
+            end
+            seqStr *= line
+        end
+    end
+
+    # push the last conactenated DNA sequence to seqArr
+    push!(seqArr, seqStr)
+
+    return headerArr, seqArr
+end
+
+
+
 # Don't forget to export your functions!
 
 end # module Assignment07
