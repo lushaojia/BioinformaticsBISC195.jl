@@ -1,4 +1,4 @@
-module Assignment07
+module BioinformaticsBISC195
 
 export normalizeDNA,
        composition,
@@ -238,5 +238,5 @@ end
 
 # Don't forget to export your functions!
 
-end # module Assignment07
+end # module BioinformaticsBISC195
 
