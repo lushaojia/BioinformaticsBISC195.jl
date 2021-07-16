@@ -38,21 +38,21 @@ using Test
         @test gc_content("ANTG") == 0.25
         @test gc_content("cccggg") * 100 == 100.0
         @test gc_content("ATta") == 0.0
-        @test_throws Exception gc_content("ATty")
+        @test_throws Exception gc_content("ATtz")
     end # gc_content
 
     @testset "complement" begin
         @test complement("ATTAN") == "TAATN"
         @test complement("gcta") == "CGAT"
         @test complement("nnnnnnn") == "NNNNNNN"
-        @test_throws Exception complement("ABC")
+        @test_throws Exception complement("AZC")
     end # complement
 
     @testset "reverse_complement" begin
         @test reverse_complement("ATTAN") == "NTAAT"
         @test reverse_complement("gcta") == "TAGC"
         @test reverse_complement("nnnnnnn") == "NNNNNNN"
-        @test_throws Exception reverse_complement("ABC")
+        @test_throws Exception reverse_complement("AZC")
     end # reverse_complement
 
     @testset "parse_fasta" begin
