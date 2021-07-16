@@ -14,16 +14,27 @@ export normalizeDNA,
     normalizeDNA(::AbstractString)
 
 Ensures that a sequence only contains valid bases
-(or `'N'` for unknown bases).
+(or `'N'` for unknown bases). 
+
+Ambiguous bases other
+than 'N' (i.e. one of "RYSWKMBDHV.-") are changed to 'N'.
+
 Returns a String.
 """
 function normalizeDNA(seq)
     seq = uppercase(string(seq))
+    seqStr = ""
+    
     for base in seq
+        if occursin(base, "RYSWKMBDHV.-")
+            seqStr *= 'N'
+        else
+            seqStr *= base
+        end
         # note: `N` indicates an unknown base
-        occursin(base, "AGCTN") || error("Invalid base, $base")
+        occursin(seqStr[length(seqStr)], "AGCTN") || error("Invalid base, $base")
     end
-    return seq # change to `return LongDNASeq(seq)` if you want to try to use BioSequences types
+    return seqStr # change to `return LongDNASeq(seq)` if you want to try to use BioSequences types
 end
 
 """
@@ -221,10 +232,11 @@ function parse_fasta(path)
             end
             counter += 1
         else
-            for base in line
-                occursin(base, "AGCTRYSWKMBDHVN.-") || error("Invalid base, $base")
-            end
-            seqStr *= line
+            # for base in line
+            #     occursin(base, "AGCTRYSWKMBDHVN.-") || error("Invalid base, $base")
+            # end
+            normalLine = normalizeDNA(line)
+            seqStr *= normalLine
         end
     end
 
