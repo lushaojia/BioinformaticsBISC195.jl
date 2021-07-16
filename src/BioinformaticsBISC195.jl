@@ -181,7 +181,7 @@ one containing parsed headers
 the other containing the entire sequence as a `String`.
 
 The function validates sequences to see if they contain DNA bases only. Accomodates 
-sequences with ambiguous bases (e.g. base N).
+sequences with ambiguous bases (e.g. bases R, Y, S, W, K, M, B, D, H, V, N and gaps . or -).
 
 Example
 ≡≡≡≡≡≡≡≡≡
@@ -222,7 +222,7 @@ function parse_fasta(path)
             counter += 1
         else
             for base in line
-                occursin(base, "AGCTN") || error("Invalid base, $base")
+                occursin(base, "AGCTRYSWKMBDHVN.-") || error("Invalid base, $base")
             end
             seqStr *= line
         end
