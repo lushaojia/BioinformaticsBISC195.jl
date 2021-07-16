@@ -41,8 +41,12 @@ end
     composition(sequence)
 
 Counts the number of each type of base
-in a DNA sequence and returns a dictionary with the keys 'A', 'C',
-'G', 'T', and 'N' whose corresponding values are their counts.
+in a DNA sequence and returns a tuple with the counts in this order:
+1. # of 'A's  
+2. # of 'G's 
+3. # of 'C's 
+4. # of 'T's
+5. # of 'N's
 
 Throws an error when an invalid base (not 'A', 'C',
 'G', 'T', or 'N') is encountered.
@@ -50,12 +54,7 @@ Throws an error when an invalid base (not 'A', 'C',
 Examples  
 ≡≡≡≡≡≡≡≡≡≡
     julia> composition("ACCGGGTTTTN")
-        Dict{Char,Int64} with 5 entries:
-            'A' => 1
-            'G' => 3
-            'T' => 4
-            'N' => 1
-            'C' => 2
+        
     
 
     julia> composition("AAX")
@@ -63,6 +62,8 @@ Examples
 """
 function composition(sequence)
     normalizedSeq = normalizeDNA(sequence)
+    #return count("A", normalizedSeq), count("G", normalizedSeq), count("C", normalizedSeq), count("T", normalizedSeq), count("N", normalizedSeq)
+
     A = G = C = T = N = 0
     for base in normalizedSeq
         if base == 'A'
