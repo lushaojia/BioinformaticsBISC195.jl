@@ -16,7 +16,7 @@ export normalizeDNA,
        alignmentHeatmap,
        mis_matchSeq,
        AlignmentSubsequences,
-       mis_matchSubsequences
+       mis_matchSubsequences302
        
 
 
