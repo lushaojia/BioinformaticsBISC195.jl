@@ -16,7 +16,7 @@ export normalizeDNA,
        alignmentHeatmap,
        mis_matchSeq,
        AlignmentSubsequences,
-       mis_matchSubsequences302
+       mis_matchSubsequences
        
 
 
@@ -75,8 +75,8 @@ Examples
     ERROR: Invalid base, X
 """
 function composition(sequence)
-    #normalizedSeq = normalizeDNA(sequence)
-    return count("A", sequence), count("G", sequence), count("C", sequence), count("T", sequence), count("N", sequence)
+    normalizedSeq = normalizeDNA(sequence)
+    return count("A", normalizedSeq), count("G", normalizedSeq), count("C", normalizedSeq), count("T", normalizedSeq), count("N", normalizedSeq)
 end
 
 """
