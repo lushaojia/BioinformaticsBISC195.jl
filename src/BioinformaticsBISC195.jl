@@ -446,6 +446,7 @@ function nwscorematrix(s1, s2; match=1, mismatch=-1, gap=-1)
     scoreDict = Dict()
 
     for i in 2:size(scoremat, 1)
+        # rather than a 2 element Any array
         for j in 2:size(scoremat, 2)
             above = gap + scoremat[i-1, j]
             left = gap + scoremat[i, j-1]
@@ -453,7 +454,8 @@ function nwscorematrix(s1, s2; match=1, mismatch=-1, gap=-1)
             scoreArr = [above, left, diagonal]
             maxScore = maximum(scoreArr)
             scoremat[i, j] = maxScore
-
+            
+            # Optional: since all of the arrays have the same structure, a Tuple will be much more performant,
             #pushing to scoreDict: keys are indices of current matrix cell in a Tuple; values are Arrays of scores and where they came from (i.e. "above", "left", or "diagonal")
             indMax = argmax(scoreArr)
             indMax==1 && push!(scoreDict, (i, j)=>[maxScore, "above"])
@@ -571,8 +573,12 @@ function mis_matchSeq(alignedSeq)
         end
     end
 
+    # Optional: Again, for performance reasons, a NamedTuple might be more appropriate here.
     return Dict("Match#"=> matchNum, "Mismatch#"=> mismatchNum, "Mis/Match%" => (matchNum/length(s1), mismatchNum/length(s1)))
 end 
+
+# TODO: This docstring is attached to `AlignmentSubsequences` instead of to `mis_matchSubsequences`
+# You can (and should) have separate docstrings for types / structs
 """
     function mis_matchSubsequences(alignedSeq)
 
@@ -610,6 +616,11 @@ struct AlignmentSubsequences
     positions::UnitRange # e.g. 1:17
     sequences::Vector # e.g. ["AGCT"]
 end
+
+# Optional: It's more idiomatic julia to make "accessor" functions to access the fields of structs,
+# Rather than accessing them directly. Eg: `positions(als::AlignmentSubsequences) = als.positions`.
+# Just be aware that `type` typically has a specific meaning (though it's available)
+
 function mis_matchSubsequences(alignedSeq)
     arr = []
     s1 = alignedSeq[1]
